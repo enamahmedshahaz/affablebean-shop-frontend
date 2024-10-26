@@ -12,7 +12,7 @@ const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddCategory = () => {
-
+    
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
 
@@ -72,58 +72,40 @@ const AddCategory = () => {
     };
 
     return (
-
         <>
-            <Helmet>
-                <title>Dashboard | Add Category </title>
-            </Helmet>
 
-            <div className="hero bg-green-50 rounded-xl min-h-screen">
-
-                <div className="hero-content flex-col">
-
-                    <div className="text-center">
-                        <h1 className="text-3xl font-bold">Add a New Product Category</h1>
-                    </div>
-
-                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-green-100">
-
-                        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-
-                            {/* Name Field */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Name</span>
-                                </label>
-
-                                <input {...register("name", { required: true })} type="text" name="name" placeholder="Category name" className="input input-bordered" />
-
-                                {errors.name?.type === "required" && (
-                                    <p className="text-red-600">Name is required</p>
-                                )}
-
-                            </div>
-
-                            {/*Image Field */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Category Image </span>
-                                </label>
-                                <input {...register('image', { required: true })} name="image" type="file" className="file-input input-bordered" />
-
-                                {errors.image?.type === "required" && (
-                                    <p className="text-red-600">Image is required</p>
-                                )}
-                            </div>
-
-                            <div className="form-control mt-3">
-                                <input className="btn text-white text-xl bg-green-500 hover:bg-green-700" type="submit" value="Add" />
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
+            <div className="text-center">
+                <h4 className="text-center font-semibold text-2xl mb-4">
+                    Add new Category
+                </h4>
             </div>
+
+            <div className="p-6 bg-green-100 rounded-lg">
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+
+                    <div className="flex gap-4 items-center">
+                        <div>
+                            Category Name: <input {...register("name", { required: true })} type="text" name="name" />
+                            {errors.name?.type === "required" && (
+                                <p className="text-red-600">Name is required</p>
+                            )}
+                        </div>
+
+                        <div>
+                            Category Image: <input {...register('image', { required: true })} name="image" type="file" />
+
+                            {errors.image?.type === "required" && (
+                                <p className="text-red-600">Image is required</p>
+                            )}
+                        </div>
+                        <div>
+                            <input className="px-5 py-2 rounded-md text-white bg-green-700" type="submit" value="Add" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </>
     );
 };

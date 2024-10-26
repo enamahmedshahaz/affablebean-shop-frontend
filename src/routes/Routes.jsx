@@ -48,10 +48,6 @@ const router = createBrowserRouter([
                 path: "/dashboard/all-users",
                 element: <AllUsers></AllUsers>,
             },
-            {
-                path: "/dashboard/add-category",
-                element: <AddCategory></AddCategory>,
-            },
         ]
     },
 
