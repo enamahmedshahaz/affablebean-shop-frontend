@@ -6,7 +6,7 @@ import useAuth from "../hooks/useAuth";
 
 
 const SocialLogin = () => {
-    
+
     const { loginWithGoogle } = useAuth();
     const axiosPublic = useAxiosPublic();
 
@@ -21,16 +21,17 @@ const SocialLogin = () => {
             .then(result => {
                 //save user data to database
                 const userInfo = {
-                    name: result.user?.displayName,
+                    firstName: result.user?.displayName,
+                    lastName: "",
                     email: result.user?.email,
-                    photo:  result.user?.photoURL,
-                    badge: 'bronze'
+                    profilePhotoUrl: result.user?.photoURL,
+                    role: 'user'
                 };
 
-                axiosPublic.post('/users', userInfo)
-                    .then(res => {
-                        console.log(res.data);
+                console.log(result.user);
 
+                axiosPublic.post('/user', userInfo)
+                    .then(res => {
                         Swal.fire({
                             position: "top-end",
                             icon: "success",

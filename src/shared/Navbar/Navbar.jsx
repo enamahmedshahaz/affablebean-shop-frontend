@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 
 import logo from "../../assets/logo/logo.png"
+import { NavLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
 
     const [theme, setTheme] = useState("light");
+    const { user, signOutUser } = useAuth();
+
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
@@ -17,10 +21,18 @@ const Navbar = () => {
 
 
     const navLinks = <>
-        <li><a>Home</a></li>
-        <li><a>All Products</a></li>
-        <li><a>Login</a></li>
-        <li><a>Register</a></li>
+        <li>
+            <NavLink to={"/"}>Home</NavLink>
+        </li>
+        <li>
+            <NavLink to={"/products"}>All products</NavLink>
+        </li>
+        <li>
+            <NavLink to={"/login"}>Login</NavLink>
+        </li>
+        <li>
+            <NavLink to={"/register"}>Register</NavLink>
+        </li>
     </>;
 
 
@@ -61,25 +73,31 @@ const Navbar = () => {
 
                 <div className="navbar-end">
 
-                    <div className="dropdown dropdown-end">
+                    {
+                        user &&
+                        <>
+                            <div className="dropdown dropdown-end">
 
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
-                                <img
-                                    alt="Tailwind CSS Navbar component"
-                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img
+                                            alt="User photo"
+                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                    </div>
+                                </div>
+                                <ul
+                                    tabIndex={0}
+                                    className="menu menu-sm dropdown-content bg-green-50 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                                    <li>
+                                        <a href="">Dashboard</a>
+                                    </li>
+                                    <li> <a>Profile</a ></li>
+                                    <li> <a>Logout</a> </li>
+                                </ul>
                             </div>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-green-50 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li>
-                                <a href="">Dashboard</a>
-                            </li>
-                            <li><a>Profile</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
-                    </div>
+                        </>
+
+                    }
 
                 </div>
             </div>
