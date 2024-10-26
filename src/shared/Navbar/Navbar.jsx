@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-
 import logo from "../../assets/logo/logo.png"
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useLoggedInUserInfo from "../../hooks/useLoggedInUserInfo";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
 
     const [theme, setTheme] = useState("light");
     const { user, signOutUser } = useAuth();
+    const [loggedInUserInfo] = useLoggedInUserInfo();
 
 
     const toggleTheme = () => {
@@ -19,6 +21,28 @@ const Navbar = () => {
         document.documentElement.setAttribute("data-theme", theme);
     }, [theme]);
 
+    const handleLogout = () => {
+        signOutUser()
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Logout successful",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Error while Sign-out!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+    }
 
     const navLinks = <>
         <li>
@@ -81,19 +105,27 @@ const Navbar = () => {
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                     <div className="w-10 rounded-full">
                                         <img
-                                            alt="User photo"
-                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                            src={loggedInUserInfo?.profilePhotoUrl} />
                                     </div>
                                 </div>
-                                <ul
-                                    tabIndex={0}
+
+                                <div tabIndex={0}
                                     className="menu menu-sm dropdown-content bg-green-50 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                                    <li>
-                                        <a href="">Dashboard</a>
-                                    </li>
-                                    <li> <a>Profile</a ></li>
-                                    <li> <a>Logout</a> </li>
-                                </ul>
+
+                                    <h4 className="font-semibold">
+                                        Welcome, {loggedInUserInfo?.firstName}
+                                    </h4>
+                                    <ul>
+                                        <li>
+                                            <Link to={"/dashboard"}>Dashboard</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={"/profile"}>Profile</Link>
+                                        </li>
+
+                                        <li> <a onClick={handleLogout}>Logout</a> </li>
+                                    </ul>
+                                </div>
                             </div>
                         </>
 
