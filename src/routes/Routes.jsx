@@ -5,6 +5,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import MainLayout from "../layout/MainLayout";
+import DashboardLayout from "../layout/DashboardLayout";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +24,10 @@ const router = createBrowserRouter([
                 path: "/register",
                 element: <Register></Register>,
             },
-
+            {
+                path: "/dashboard",
+                element: <DashboardLayout></DashboardLayout>,
+            },
         ]
     },
 ]);
