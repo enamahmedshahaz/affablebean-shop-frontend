@@ -37,8 +37,10 @@ const Categories = () => {
 
     return (
         <div className="w-full px-4 py-6 relative">
-            <h2 className="text-3xl font-bold uppercase text-green-700">Shop by Categories</h2>
-
+           
+           <h2 className="text-3xl font-bold text-center mb-8 text-green-700">
+                Our Product Categories
+            </h2>
             {/* Left Arrow */}
             <button
                 onClick={scrollLeft}

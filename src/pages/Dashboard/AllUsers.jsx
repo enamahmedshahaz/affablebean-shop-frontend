@@ -8,13 +8,12 @@ import useUsers from "../../hooks/useUsers";
 const AllUsers = () => {
 
     const [users, userLoading, refetch] = useUsers();
-
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
 
     const handleEdit = (user) => {
-        // Navigate to the AddProduct page with product data as state
-        navigate("/dashboard/add-product", { state: { user } });
+        // // Navigate to the AddProduct page with product data as state
+        // navigate("/dashboard/add-product", { state: { user } });
     }
 
     const handleChangeRole = (user) => {
@@ -30,7 +29,7 @@ const AllUsers = () => {
         }).then((result) => {
 
             if (result.isConfirmed) {
-                axiosPublic.patch(`/user/changeRole/${user._id}`)
+                axiosPublic.patch(`/user/changeRole/${user._id}?role=${user.role}`)
                     .then(response => {
                         // console.log(response.data);
                         if (response.data.modifiedCount) {
