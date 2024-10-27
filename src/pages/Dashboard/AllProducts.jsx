@@ -1,11 +1,52 @@
 import { Link, useLoaderData } from "react-router-dom";
 import AddCategory from "./AddCategory";
 import useProducts from "../../hooks/useProducts";
+import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 
 const AllProducts = () => {
 
-    const [products] = useProducts();
+    const [products, , refetch] = useProducts();
+    const axiosPublic = useAxiosPublic();
+
+    const handleDeleteProduct = (product) => {
+        //console.log('Delete: ', id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Want to delete product - ${product.name} `,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                axiosPublic.delete(`/product/${product._id}`)
+                    .then(response => {
+                        // console.log(response.data);
+                        if (response.data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: `Post: ${product.name} has been deleted!`,
+                                icon: "success"
+                            });
+                            refetch(); //refetch posts data
+                        }
+                    })
+                    .catch(error => {
+                        //  console.log(error);
+                        Swal.fire({
+                            title: "Can't Delete!",
+                            text: `Error occurred: ${error.message}`,
+                            icon: "error"
+                        });
+                    });
+            }
+        });
+    }
 
     return (
         <div>
@@ -64,7 +105,7 @@ const AllProducts = () => {
                                     </td>
                                     <td>
                                         <button className="btn btn-ghost btn-xs">Edit </button>
-                                        <button  className="btn btn-ghost btn-xs">Delete</button>
+                                        <button onClick={() => handleDeleteProduct(product)} className="btn btn-ghost btn-xs">Delete</button>
                                     </td>
                                 </tr>
                             )
