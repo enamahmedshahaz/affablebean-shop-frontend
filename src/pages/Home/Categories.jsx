@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useEffect, useState, useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
@@ -35,10 +35,16 @@ const Categories = () => {
         }
     };
 
+    const navigate = useNavigate();
+
+    const handleClickCategory = (selectedCategory) => {
+        navigate("products", { state: { selectedCategory } });
+    }
+
     return (
         <div className="w-full px-4 py-6 relative">
-           
-           <h2 className="text-3xl font-bold text-center mb-8 text-green-700">
+
+            <h2 className="text-3xl font-bold text-center mb-8 text-green-700">
                 Our Product Categories
             </h2>
             {/* Left Arrow */}
@@ -52,10 +58,10 @@ const Categories = () => {
             {/* Slider Container */}
             <div ref={sliderRef} className="flex space-x-4 py-4 overflow-hidden scroll-smooth">
                 {categories.map((category) => (
-                    <Link className="hover:shadow-2xl" to={`/product?categoryId=${category._id}`} key={category._id}>
+                    <div className="hover:shadow-2xl" onClick={() => handleClickCategory(category._id)} key={category._id}>
                         <div className="w-64 flex-shrink-0 rounded-lg shadow-lg overflow-hidden relative group">
                             <img
-                                src={category.imageUrl} // Add image URL in category object
+                                src={category.imageUrl}
                                 alt={category.name}
                                 className="w-full h-48 object-cover"
                             />
@@ -63,7 +69,7 @@ const Categories = () => {
                                 <div className="text-green-600 font-semibold">{category.name}</div>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
 
