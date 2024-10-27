@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Helmet } from "react-helmet-async";
 import Swal from 'sweetalert2';
@@ -22,7 +22,13 @@ const AddProduct = () => {
 
     const axiosPublic = useAxiosPublic();
 
+    const location = useLocation();
+    const initialProduct = location.state?.product || null;  // Get product data if available
+
+    console.log('initial p:', initialProduct);
+
     useEffect(() => {
+        // Fetch categories for dropdown
         fetch(`http://localhost:5000/category`)
             .then((res) => res.json())
             .then((data) => setCategories(data))
@@ -36,6 +42,20 @@ const AddProduct = () => {
         formState: { errors },
         reset
     } = useForm();
+
+    // Populate form with initial product data when editing
+    useEffect(() => {
+        if (initialProduct) {
+            reset({
+                _id: initialProduct._id,
+                name: initialProduct.name,
+                price: initialProduct.price,
+                rating: initialProduct.rating,
+                category: initialProduct.category_id,
+                imageUrl: initialProduct.imageUrl,
+            });
+        }
+    }, [initialProduct, reset]);
 
     const onSubmit = async (data) => {
         //console.log('Register form data: ', data);
@@ -61,37 +81,61 @@ const AddProduct = () => {
             date_create: new Date()
         }
 
-        console.log('product:', product)
-        axiosPublic.post('/product', product)
-            .then(res => {
-
-                if (res.data.insertedId) {
-                    // clear all input values in the form
-                    reset();
+        if (initialProduct) {
+            //update product logic
+            axiosPublic.patch(`/product/${initialProduct._id}`, product)
+                .then(res => {
+                    if (res.data.modifiedCount) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Product info updated",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        navigate("/dashboard/all-products");
+                    }
+                }).catch(error => {
                     Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "New  product added",
-                        showConfirmButton: false,
-                        timer: 1500
+                        title: "Update failed!",
+                        text: `Error: ${error.message}`,
+                        icon: "error"
                     });
-                    setLoading(false);
-                    navigate("/dashboard/all-products");
-                }
-            }).catch(error => {
-                Swal.fire({
-                    title: "Add product failed!",
-                    text: `Error: ${error.message}`,
-                    icon: "error"
-                });
-            })
+                })
+
+        } else {
+            //Add product logic
+            axiosPublic.post('/product', product)
+                .then(res => {
+
+                    if (res.data.insertedId) {
+                        // clear all input values in the form
+                        reset();
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "New  product added",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setLoading(false);
+                        navigate("/dashboard/all-products");
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        title: "Add product failed!",
+                        text: `Error: ${error.message}`,
+                        icon: "error"
+                    });
+                })
+        }
     };
 
     return (
         <>
             <div className="text-center">
                 <h4 className="text-center font-semibold text-2xl mb-4">
-                    Add new Product
+                    {initialProduct ? "Update Product Info" : " Add New Product"}
                 </h4>
             </div>
 
@@ -186,9 +230,11 @@ const AddProduct = () => {
                         )}
                     </div>
 
-                    <button className="btn btn-primary mt-6">
-                        Add Product
-                    </button>
+                    <input
+                        className="btn btn-primary mt-6"
+                        type="submit"
+                        value={initialProduct ? "Update Product" : "Add Product"}
+                    />
 
                 </form>
             </div>

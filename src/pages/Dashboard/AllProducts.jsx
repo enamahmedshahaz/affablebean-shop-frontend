@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory";
 import useProducts from "../../hooks/useProducts";
 import Swal from "sweetalert2";
@@ -9,6 +9,12 @@ const AllProducts = () => {
 
     const [products, , refetch] = useProducts();
     const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
+
+    const handleEditProduct = (product) => {
+        // Navigate to the AddProduct page with product data as state
+        navigate("/dashboard/add-product", { state: { product } });
+    }
 
     const handleDeleteProduct = (product) => {
         //console.log('Delete: ', id);
@@ -104,7 +110,7 @@ const AllProducts = () => {
                                         {product.category_id}
                                     </td>
                                     <td>
-                                        <button className="btn btn-ghost btn-xs">Edit </button>
+                                        <button onClick={() => handleEditProduct(product)} className="btn btn-ghost btn-xs">Edit </button>
                                         <button onClick={() => handleDeleteProduct(product)} className="btn btn-ghost btn-xs">Delete</button>
                                     </td>
                                 </tr>
