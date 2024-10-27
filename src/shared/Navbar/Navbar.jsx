@@ -51,12 +51,20 @@ const Navbar = () => {
         <li>
             <NavLink to={"/products"}>All products</NavLink>
         </li>
-        <li>
-            <NavLink to={"/login"}>Login</NavLink>
-        </li>
-        <li>
-            <NavLink to={"/register"}>Register</NavLink>
-        </li>
+
+        {
+            !user &&
+            <>
+                <li>
+                    <NavLink to={"/login"}>Login</NavLink>
+                </li>
+                <li>
+                    <NavLink to={"/register"}>Register</NavLink>
+                </li>
+            </>
+        }
+
+
     </>;
 
 
@@ -118,9 +126,6 @@ const Navbar = () => {
                                     <ul>
                                         <li>
                                             <Link to={"/dashboard"}>Dashboard</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={"/profile"}>Profile</Link>
                                         </li>
 
                                         <li> <a onClick={handleLogout}>Logout</a> </li>
