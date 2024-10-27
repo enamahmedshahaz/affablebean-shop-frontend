@@ -1,9 +1,10 @@
-
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AllProducts = () => {
     return (
         <div>
-            Showing All products
+            <Link to={"/dashboard/add-product"}>Add product</Link>
         </div>
     );
 };

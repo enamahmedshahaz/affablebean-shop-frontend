@@ -5,14 +5,13 @@ import useAxiosPublic from "./useAxiosPublic";
 
 const useLoggedInUserInfo = () => {
 
-    const axiosSecure = useAxiosPublic();
+    const axios = useAxiosPublic();
     const { user } = useAuth();
 
     const { data: loggedInUserInfo, isPending: loggedInUserInfoLoading } = useQuery({
         queryKey: [user?.email, 'userInfo'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/user?email=${user.email}`);
-            console.log('tanstack: ', res.data);
+            const res = await axios.get(`/user?email=${user.email}`);
             return res.data;
         }
     });

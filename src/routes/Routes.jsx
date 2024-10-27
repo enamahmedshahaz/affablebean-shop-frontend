@@ -10,6 +10,7 @@ import AllCategories from "../pages/Dashboard/AllCategories";
 import AllProducts from "../pages/Dashboard/AllProducts";
 import AllUsers from "../pages/Dashboard/AllUsers";
 import AddCategory from "../pages/Dashboard/AddCategory";
+import AddProduct from "../pages/Dashboard/AddProduct";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/all-products",
                 element: <AllProducts></AllProducts>,
+            },
+            {
+                path: "/dashboard/add-product",
+                element: <AddProduct></AddProduct>,
             },
             {
                 path: "/dashboard/all-users",

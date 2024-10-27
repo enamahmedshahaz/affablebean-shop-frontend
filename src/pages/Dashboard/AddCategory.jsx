@@ -85,6 +85,7 @@ const AddCategory = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
 
                     <div className="flex gap-4 items-center">
+                        
                         <div>
                             Category Name: <input {...register("name", { required: true })} type="text" name="name" />
                             {errors.name?.type === "required" && (
@@ -99,6 +100,7 @@ const AddCategory = () => {
                                 <p className="text-red-600">Image is required</p>
                             )}
                         </div>
+
                         <div>
                             <input className="px-5 py-2 rounded-md text-white bg-green-700" type="submit" value="Add" />
                         </div>

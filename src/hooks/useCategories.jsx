@@ -3,16 +3,15 @@ import useAxiosPublic from "./useAxiosPublic";
 
 const useCategories = () => {
 
-    const axiosSecure = useAxiosPublic();
-
-    const { data: categories, isPending: categoriesLoading, refetch } = useQuery({
+    const axiosPublic = useAxiosPublic();
+    const { data: categories, isPending: categoriesLoading } = useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/category`);
+            const res = await axiosPublic.get(`/category`);
             return res.data;
         }
     });
-    return [categories, categoriesLoading, refetch];
+    return [categories, categoriesLoading];
 };
 
 export default useCategories;
